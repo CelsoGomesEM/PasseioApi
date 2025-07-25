@@ -1,0 +1,60 @@
+# Build results
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VSCode / JetBrains / VS
+.vscode/
+.idea/
+*.sw?
+*.dbmdl
+*.log
+
+# Visual Studio
+.vs/
+Generated\ Files/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.symbols.nupkg
+
+# Configuration files
+appsettings.*.json
+secrets.json
+
+# Publish
+*.publish.xml
+publish/
+
+# Others
+*.DS_Store
+Thumbs.db
+
+# Entity Framework Core
+Migrations/
+
+# Logs
+*.log
+
+# dotenv
+.env
+
+# JetBrains Rider settings
+.idea/
+
+# IIS Express
+.vs/
+*.vspscc
+*.vssscc
