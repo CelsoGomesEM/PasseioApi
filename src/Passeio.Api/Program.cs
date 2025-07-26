@@ -1,5 +1,7 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Passeio.Data.Context;
+using Passeio.Negocio.Interfaces;
+using Passeio.Negocio.Notificacoes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,6 @@ builder.Services.AddDbContext<ApiDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
