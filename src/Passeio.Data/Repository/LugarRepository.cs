@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Passeio.Data.Repository
 {
-    public class CategoriaRepository : Repository<Categoria>, ICategoriaRepository
+    public class LugarRepository : Repository<Lugar>, ILugarRepository
     {
-        public CategoriaRepository(ApiDBContext db) : base(db) {}
+        public LugarRepository(ApiDBContext db) : base(db){}
     }
 }
