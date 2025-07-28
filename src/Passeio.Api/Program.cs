@@ -1,9 +1,28 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Passeio.Api.Configuration;
 using Passeio.Data.Context;
-using Passeio.Negocio.Interfaces;
-using Passeio.Negocio.Notificacoes;
 
 var builder = WebApplication.CreateBuilder(args);
+
+/// 1. Configuração explícita com LoggerFactory
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder.AddConsole();
+    builder.AddDebug();
+});
+
+var mapperConfigExpression = new MapperConfigurationExpression();
+mapperConfigExpression.AddProfile<MappingProfile>();
+
+// Cria a configuração com LoggerFactory
+var mapperConfig = new MapperConfiguration(mapperConfigExpression, loggerFactory);
+
+// Valida os mapeamentos (opcional)
+mapperConfig.AssertConfigurationIsValid();
+
+// Cria e registra o IMapper
+builder.Services.AddSingleton<IMapper>(mapperConfig.CreateMapper());
 
 // Add services to the container.
 
@@ -12,10 +31,11 @@ builder.Services.AddDbContext<ApiDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.ResolveDependecies();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
