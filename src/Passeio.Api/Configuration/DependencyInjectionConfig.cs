@@ -1,6 +1,8 @@
 ﻿using Passeio.Data.Context;
 using Passeio.Data.Repository;
 using Passeio.Negocio.Interfaces;
+using Passeio.Negocio.Notificacoes;
+using Passeio.Negocio.Services;
 
 namespace Passeio.Api.Configuration
 {
@@ -10,6 +12,8 @@ namespace Passeio.Api.Configuration
         {
             services.AddScoped<ApiDBContext>();
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddScoped<INotificador, Notificador>();
             return services;
         }
     }

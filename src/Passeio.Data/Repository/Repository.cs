@@ -51,8 +51,13 @@ namespace Passeio.Data.Repository
 
         public virtual async Task Remover(Guid id)
         {
-            DbSet.Remove(new TEntity { Id = id });
-            await SaveChanges();
+            var entity = await DbSet.FindAsync(id);
+
+            if (entity != null)
+            {
+                DbSet.Remove(entity);
+                await SaveChanges();
+            }
         }
 
         public async Task<int> SaveChanges()

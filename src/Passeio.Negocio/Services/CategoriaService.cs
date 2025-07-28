@@ -20,6 +20,7 @@ namespace Passeio.Negocio.Services
             _categoriaRepository = categoriaRepository;
         }
 
+
         public async Task Adicionar(Categoria categoria)
         {
             if (!ExecutarValidacao(new CategoriaValidation(), categoria)) return;
