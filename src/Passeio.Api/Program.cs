@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Passeio.Api.Configuration;
 using Passeio.Data.Context;
@@ -29,6 +30,11 @@ builder.Services.AddSingleton<IMapper>(mapperConfig.CreateMapper());
 builder.Services.AddDbContext<ApiDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
 });
 
 builder.Services.ResolveDependecies();

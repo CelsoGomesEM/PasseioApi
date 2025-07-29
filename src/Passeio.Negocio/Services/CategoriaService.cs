@@ -25,6 +25,13 @@ namespace Passeio.Negocio.Services
         {
             if (!ExecutarValidacao(new CategoriaValidation(), categoria)) return;
 
+            if (_categoriaRepository.Buscar(f => f.Id == categoria.Id).Result.Any())
+            {
+                Notificar("Já existe um fornecedor com este documento infomado.");
+                return;
+            }
+
+
             await _categoriaRepository.Adicionar(categoria);
         }
 
@@ -38,6 +45,11 @@ namespace Passeio.Negocio.Services
         public async Task Remover(Guid id)
         {
             await _categoriaRepository.Remover(id);
+        }
+
+        public void Dispose()
+        {
+            _categoriaRepository?.Dispose();
         }
     }
 }
