@@ -17,7 +17,8 @@ namespace Passeio.Api.Controllers
 
         public CategoriasController(ICategoriaRepository categoriaRepository, 
                                     IMapper mapper,
-                                    ICategoriaService categoriaService)
+                                    ICategoriaService categoriaService,
+                                    INotificador notificador) : base (notificador)
         {
             _categoriaRepository = categoriaRepository;
             _mapper = mapper;
@@ -48,26 +49,26 @@ namespace Passeio.Api.Controllers
         public async Task<ActionResult<CategoriaViewModel>> Adicionar(CategoriaViewModel categoriaViewModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return CustomResponse(ModelState);
 
             var categoria = _mapper.Map<Categoria>(categoriaViewModel);
 
             await _categoriaService.Adicionar(categoria);
 
-            return Ok(categoria);
+            return CustomResponse(categoriaViewModel);
         }
 
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<CategoriaViewModel>> Atualizar(Guid id, CategoriaViewModel categoriaViewModel)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return CustomResponse(ModelState);
 
             var categoria = _mapper.Map<Categoria>(categoriaViewModel);
 
             await _categoriaService.Atualizar(categoria);
 
-            return Ok(categoria);
+            return CustomResponse(categoriaViewModel);
         }
 
         [HttpDelete("{id:guid}")]
@@ -80,7 +81,7 @@ namespace Passeio.Api.Controllers
 
             await _categoriaRepository.Remover(id);
 
-            return Ok(categoria);
+            return CustomResponse();
         }
 
     }

@@ -27,7 +27,7 @@ namespace Passeio.Negocio.Services
 
             if (_categoriaRepository.Buscar(f => f.Id == categoria.Id).Result.Any())
             {
-                Notificar("Já existe um fornecedor com este documento infomado.");
+                Notificar("Já existe uma categoria com este id informado.");
                 return;
             }
 
