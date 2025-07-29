@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Passeio.Api.Data;
+using Passeio.Api.Extensions;
 using Passeio.Data.Context;
 using Passeio.Data.Repository;
 using Passeio.Negocio.Interfaces;
@@ -21,6 +22,7 @@ namespace Passeio.Api.Configuration
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDBContext>()
+                    .AddErrorDescriber<IdentityBR>()
                     .AddDefaultTokenProviders();
 
             return services;

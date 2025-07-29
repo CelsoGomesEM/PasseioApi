@@ -6,7 +6,7 @@ using Passeio.Negocio.Interfaces;
 
 namespace Passeio.Api.Controllers
 {
-    [Route("api/conta")]
+    [Route("api")]
     public class AuthController : MainController
     {
 
@@ -21,6 +21,7 @@ namespace Passeio.Api.Controllers
             _userManager = userManager;
         }
 
+        [HttpPost("nova-conta")]
         public async Task<ActionResult> Registrar(RegisterUserViewModel user)
         {
             if (!ModelState.IsValid)
@@ -47,6 +48,30 @@ namespace Passeio.Api.Controllers
             }
 
             return CustomResponse(user);
+        }
+
+        [HttpPost("entrar")]
+        public async Task<ActionResult> Login(LoginUserViewModel user)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, false, true);
+
+            if (result.Succeeded)
+            {
+                return CustomResponse(user);
+            }
+
+            if (result.IsLockedOut)
+            {
+                NotificarErro("Usuário temporariamente bloqueado por multiplas tentativas.");
+                return CustomResponse(user);
+            }
+
+            NotificarErro("Usuário ou senha incorretos.");
+            return CustomResponse(user);
+            
         }
     }
 }
