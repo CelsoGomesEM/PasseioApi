@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Passeio.Api.ViewModel;
 using Passeio.Negocio.Interfaces;
 using Passeio.Negocio.Models;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Passeio.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class CategoriasController : MainController
     {

@@ -2,11 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Passeio.Api.Data;
 using Passeio.Api.Extensions;
-using Passeio.Data.Context;
-using Passeio.Data.Repository;
-using Passeio.Negocio.Interfaces;
-using Passeio.Negocio.Notificacoes;
-using Passeio.Negocio.Services;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Passeio.Api.Configuration
 {
@@ -24,6 +22,33 @@ namespace Passeio.Api.Configuration
                     .AddEntityFrameworkStores<ApplicationDBContext>()
                     .AddErrorDescriber<IdentityBR>()
                     .AddDefaultTokenProviders();
+
+            //Implementação JSON web Token
+
+            var appSettingsSection = configuration.GetSection("AppSettings");
+            services.Configure<AppSettingsJWT>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettingsJWT>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = appSettings.ValidoEm,
+                    ValidIssuer = appSettings.Emissor
+                };
+            });
 
             return services;
         }
