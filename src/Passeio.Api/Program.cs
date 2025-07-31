@@ -65,6 +65,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 
+app.UseHsts();
+
 app.UseHttpsRedirection();
 
 app.UseCors("Development");
