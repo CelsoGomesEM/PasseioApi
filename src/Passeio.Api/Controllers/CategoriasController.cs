@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Passeio.Api.Extensions;
 using Passeio.Api.ViewModel;
 using Passeio.Negocio.Interfaces;
 using Passeio.Negocio.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Passeio.Api.Controllers
 {
@@ -45,6 +46,7 @@ namespace Passeio.Api.Controllers
             return Ok(categoriaViewModel);
         }
 
+        [ClaimsAuthorize("Admin", "Geral")]
         [HttpPost]
         public async Task<ActionResult<CategoriaViewModel>> Adicionar(CategoriaViewModel categoriaViewModel)
         {
@@ -58,6 +60,7 @@ namespace Passeio.Api.Controllers
             return CustomResponse(categoriaViewModel);
         }
 
+        [ClaimsAuthorize("Admin", "Geral")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<CategoriaViewModel>> Atualizar(Guid id, CategoriaViewModel categoriaViewModel)
         {
@@ -71,6 +74,7 @@ namespace Passeio.Api.Controllers
             return CustomResponse(categoriaViewModel);
         }
 
+        [ClaimsAuthorize("Admin", "Geral")]
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult<CategoriaViewModel>> Deletar(Guid id)
         {
