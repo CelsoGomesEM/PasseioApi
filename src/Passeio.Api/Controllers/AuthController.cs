@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using Passeio.Api.Extensions;
 using Passeio.Api.ViewModel;
 using Passeio.Negocio.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Newtonsoft.Json;
+
 
 namespace Passeio.Api.Controllers
 {
@@ -82,6 +86,52 @@ namespace Passeio.Api.Controllers
             return CustomResponse(user);
             
         }
+
+        [HttpPost("external/google")]
+        public async Task<IActionResult> ExternalLoginGoogle(ExternalLoginViewModel request)
+        {
+            // 1. Validar o token com o Google
+            GoogleJsonWebSignature.Payload payload;
+
+            try
+            {
+                payload = await GoogleJsonWebSignature.ValidateAsync(request.idToken);
+            }
+            catch (InvalidJwtException)
+            {
+                NotificarErro("Token inválido do Google.");
+                return CustomResponse(request);
+            }
+
+            // 2. Verificar se o usuário já existe
+            var user = await _userManager.FindByEmailAsync(payload.Email);
+
+            if (user == null)
+            {
+                // 3. Criar novo usuário sem senha
+                user = new IdentityUser
+                {
+                    UserName = payload.Email,
+                    Email = payload.Email,
+                    EmailConfirmed = true
+                };
+
+                var result = await _userManager.CreateAsync(user);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                        NotificarErro(error.Description);
+
+                    return CustomResponse();
+                }
+            }
+
+            // 4. Gerar e retornar o JWT
+            var jwt = await GerarJwt(payload.Email);
+            return CustomResponse(jwt);
+        }
+
+
 
         private async Task<LoginResponseViewModel> GerarJwt(string email)
         {

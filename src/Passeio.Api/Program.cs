@@ -67,10 +67,10 @@ app.UseAuthentication();
 
 app.UseHttpsRedirection();
 
+app.UseCors("Development");
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseCors("Development");
 
 app.Run();
