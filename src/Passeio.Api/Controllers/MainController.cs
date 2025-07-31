@@ -9,10 +9,12 @@ namespace Passeio.Api.Controllers
     public abstract class MainController : ControllerBase
     {
         private readonly INotificador _notificador;
+        public readonly IUser _appuser;
 
-        public MainController(INotificador notificador)
+        public MainController(INotificador notificador, IUser appuser)
         {
             _notificador = notificador;
+            _appuser = appuser;
         }
 
         protected bool OperacaoValida()

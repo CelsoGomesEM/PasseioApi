@@ -19,7 +19,8 @@ namespace Passeio.Api.Controllers
         public CategoriasController(ICategoriaRepository categoriaRepository, 
                                     IMapper mapper,
                                     ICategoriaService categoriaService,
-                                    INotificador notificador) : base (notificador)
+                                    INotificador notificador,
+                                    IUser user) : base (notificador, user)
         {
             _categoriaRepository = categoriaRepository;
             _mapper = mapper;

@@ -1,4 +1,5 @@
-﻿using Passeio.Data.Context;
+﻿using Passeio.Api.Extensions;
+using Passeio.Data.Context;
 using Passeio.Data.Repository;
 using Passeio.Negocio.Interfaces;
 using Passeio.Negocio.Notificacoes;
@@ -14,6 +15,10 @@ namespace Passeio.Api.Configuration
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<ICategoriaService, CategoriaService>();
             services.AddScoped<INotificador, Notificador>();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IUser, AspNetUser>();
+
             return services;
         }
     }
