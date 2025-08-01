@@ -8,6 +8,7 @@ namespace Passeio.Data.Context
         public ApiDBContext(DbContextOptions<ApiDBContext> options) : base(options){}
 
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Lugar> Lugares { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

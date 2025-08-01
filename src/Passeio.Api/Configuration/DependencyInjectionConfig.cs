@@ -14,6 +14,8 @@ namespace Passeio.Api.Configuration
             services.AddScoped<ApiDBContext>();
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddScoped<ILugarRepository, LugarRepository>();
+            services.AddScoped<ILugarService, LugarService>();
             services.AddScoped<INotificador, Notificador>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

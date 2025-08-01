@@ -57,8 +57,6 @@ builder.Services.AddSwaggerConfig();
 builder.Services.AddLoggingConfig();
 builder.Services.AddHealthChecks();
 
-
-
 var app = builder.Build();
 
 app.UseSwagger();

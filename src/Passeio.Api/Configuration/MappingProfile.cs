@@ -10,7 +10,12 @@ namespace Passeio.Api.Configuration
         {
             // Exemplo de mapeamento
             CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
-            CreateMap<Lugar, LugarViewModel>().ReverseMap();
+
+            CreateMap<LugarViewModel, Lugar>()
+                .ForMember(dest => dest.Categoria, opt => opt.Ignore());
+
+            CreateMap<Lugar, LugarViewModel>()
+                .ForMember(dest => dest.Categoria, opt => opt.MapFrom(src => src.Categoria.Nome));
         }
     }
 }

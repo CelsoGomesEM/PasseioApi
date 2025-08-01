@@ -1,5 +1,7 @@
-﻿using Passeio.Negocio.Models;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Passeio.Negocio.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Passeio.Api.ViewModel
 {
@@ -24,9 +26,8 @@ namespace Passeio.Api.ViewModel
         public int Avaliacao { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
-        public CategoriaViewModel Categoria { get; set; }
-
-        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         public Guid CategoriaId { get; set; }
+
+        public string Categoria { get; set; } = string.Empty;
     }
 }

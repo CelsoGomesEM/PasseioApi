@@ -27,10 +27,10 @@ namespace Passeio.Data.Mappings
             builder.Property(l => l.CategoriaId)
                 .IsRequired();
 
-            // Relacionamento 1:1 com Categoria
+            // Relacionamento 1:N
             builder.HasOne(l => l.Categoria)
-                .WithOne()
-                .HasForeignKey<Lugar>(l => l.CategoriaId)
+                .WithMany() // <== permite múltiplos lugares por categoria
+                .HasForeignKey(l => l.CategoriaId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

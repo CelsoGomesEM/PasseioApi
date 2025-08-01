@@ -26,10 +26,6 @@ namespace Passeio.Negocio.Models.Validations
             RuleFor(c => c.Avaliacao)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido");
 
-            RuleFor(x => x.Categoria)
-                .NotNull()
-                .WithMessage("O campo {PropertyName} precisa ser fornecido.");
-
             RuleFor(x => x.CategoriaId)
                 .NotEqual(Guid.Empty)
                 .WithMessage("O campo {PropertyName} precisa ser fornecido.");
