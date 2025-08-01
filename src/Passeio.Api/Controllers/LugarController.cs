@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Passeio.Api.Extensions;
 using Passeio.Api.ViewModel;
 using Passeio.Negocio.Interfaces;
 using Passeio.Negocio.Models;
 
 namespace Passeio.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class LugarController : MainController
     {
@@ -42,7 +45,7 @@ namespace Passeio.Api.Controllers
             return Ok(lugarViewModel);
         }
 
-        //[ClaimsAuthorize("Admin", "Geral")]
+        [ClaimsAuthorize("Admin", "Geral")]
         [HttpPost]
         public async Task<ActionResult<LugarViewModel>> Adicionar(LugarViewModel lugarViewModel)
         {
@@ -56,7 +59,7 @@ namespace Passeio.Api.Controllers
             return CustomResponse(lugarViewModel);
         }
 
-        //[ClaimsAuthorize("Admin", "Geral")]
+        [ClaimsAuthorize("Admin", "Geral")]
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<LugarViewModel>> Atualizar(Guid id, LugarViewModel lugarViewModel)
         {
@@ -73,6 +76,21 @@ namespace Passeio.Api.Controllers
 
             return CustomResponse(lugarViewModel);
         }
+
+        [ClaimsAuthorize("Admin", "Geral")]
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult<LugarViewModel>> Excluir(Guid id)
+        {
+            var lugarViewModel = await _lugarrepository.ObterPorId(id);
+
+            if (lugarViewModel == null) 
+                return NotFound();
+
+            await _lugarservice.Remover(id);
+
+            return CustomResponse(lugarViewModel);
+        }
+
 
     }
 }
