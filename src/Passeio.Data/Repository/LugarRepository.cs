@@ -21,5 +21,10 @@ namespace Passeio.Data.Repository
                 .Include(l => l.Categoria) // <- Inclui os dados da Categoria
                 .ToListAsync();
         }
+
+        public async Task<bool> ExisteLugarComCategoria(Guid categoriaId)
+        {
+            return await Db.Lugares.AnyAsync(l => l.CategoriaId == categoriaId);
+        }
     }
 }

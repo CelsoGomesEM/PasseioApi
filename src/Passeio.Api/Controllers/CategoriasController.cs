@@ -13,6 +13,7 @@ namespace Passeio.Api.Controllers
     public class CategoriasController : MainController
     {
         private readonly ICategoriaRepository _categoriaRepository;
+        private readonly ILugarRepository _lugarRepository;
         private readonly ICategoriaService _categoriaService;
         private readonly IMapper _mapper;
 
@@ -20,11 +21,13 @@ namespace Passeio.Api.Controllers
                                     IMapper mapper,
                                     ICategoriaService categoriaService,
                                     INotificador notificador,
-                                    IUser user) : base (notificador, user)
+                                    IUser user, 
+                                    ILugarRepository lugarRepository) : base (notificador, user)
         {
             _categoriaRepository = categoriaRepository;
             _mapper = mapper;
             _categoriaService = categoriaService;
+            _lugarRepository = lugarRepository;
         }
 
         [HttpGet]
@@ -84,9 +87,17 @@ namespace Passeio.Api.Controllers
             if (categoria == null)
                 return NotFound();
 
+            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(categoria);
+
+            if (await _lugarRepository.ExisteLugarComCategoria(id))
+            {
+                NotificarErro("Não é possível excluir esta categoria pois está vinculada a um lugar cadastrado.");
+                return CustomResponse(categoriaViewModel);
+            }
+
             await _categoriaRepository.Remover(id);
 
-            return CustomResponse();
+            return CustomResponse(categoriaViewModel);
         }
 
     }

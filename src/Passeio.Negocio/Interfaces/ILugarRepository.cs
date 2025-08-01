@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Passeio.Negocio.Interfaces
 {
     public interface ILugarRepository : IRepository<Lugar>
-    { 
+    {
+        Task<bool> ExisteLugarComCategoria(Guid categoriaId);
     }
 }
