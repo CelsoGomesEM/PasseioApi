@@ -45,6 +45,22 @@ namespace Passeio.Api.Controllers
             return Ok(lugarViewModel);
         }
 
+        [HttpGet("filtrar")]
+        public async Task<IEnumerable<LugarViewModel>> Filtrar(string nome_like, string categoria)
+        {
+            var lugares = await _lugarrepository.ObterTodos();
+
+            var lugaresFiltro = lugares.Where(l =>
+                (string.IsNullOrEmpty(nome_like) || l.Nome.Contains(nome_like)) &&
+                (string.IsNullOrEmpty(categoria) || l.Categoria.Nome == categoria)
+            );
+
+            var retorno = _mapper.Map<IEnumerable<LugarViewModel>>(lugaresFiltro);
+
+            return retorno;
+        }
+
+
         [ClaimsAuthorize("Admin", "Geral")]
         [HttpPost]
         public async Task<ActionResult<LugarViewModel>> Adicionar(LugarViewModel lugarViewModel)
