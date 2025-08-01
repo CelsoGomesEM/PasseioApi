@@ -10,12 +10,12 @@ namespace Passeio.Api.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
-    public class LugarController : MainController
+    public class LugaresController : MainController
     {
         private readonly ILugarRepository _lugarrepository;
         private readonly ILugarService _lugarservice;
         private readonly IMapper _mapper;
-        public LugarController(INotificador notificador, 
+        public LugaresController(INotificador notificador, 
                                IUser appuser,
                                IMapper mapper, ILugarRepository repository, ILugarService lugarservice) : base(notificador, appuser)
         {
