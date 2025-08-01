@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Passeio.Api.Configuration;
+using Passeio.Api.Extensions;
 using Passeio.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +54,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerConfig();
+builder.Services.AddLoggingConfig();
 
 var app = builder.Build();
 
@@ -65,6 +67,8 @@ app.UseSwaggerUI(c =>
 
 app.UseAuthentication();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHsts();
 
 app.UseHttpsRedirection();
@@ -74,5 +78,7 @@ app.UseCors("Development");
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseLoggingConfiguration();
 
 app.Run();

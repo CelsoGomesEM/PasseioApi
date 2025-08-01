@@ -23,15 +23,18 @@ namespace Passeio.Api.Controllers
         private readonly SignInManager<IdentityUser> _signInManager; //Auth user
         private readonly UserManager<IdentityUser> _userManager; // User auth
         private readonly AppSettingsJWT _appSettings;
+        private readonly ILogger _logger;
 
         public AuthController(INotificador notificador, 
                             SignInManager<IdentityUser> signInManager, 
                             UserManager<IdentityUser> userManager,
                             IOptions<AppSettingsJWT> appSettings,
-                            IUser user) : base(notificador, user)
+                            IUser user, 
+                            ILogger<AuthController> logger) : base(notificador, user)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _logger = logger;
             _appSettings = appSettings.Value;
         }
 
@@ -83,6 +86,7 @@ namespace Passeio.Api.Controllers
                 return CustomResponse(user);
             }
 
+            _logger.LogError("Usuário ou senha incorretos.");
             NotificarErro("Usuário ou senha incorretos.");
             return CustomResponse(user);
             
