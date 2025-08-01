@@ -55,6 +55,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerConfig();
 builder.Services.AddLoggingConfig();
+builder.Services.AddHealthChecks();
+
+
 
 var app = builder.Build();
 
@@ -80,5 +83,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseLoggingConfiguration();
+
+app.UseHealthChecks("/health");
 
 app.Run();
