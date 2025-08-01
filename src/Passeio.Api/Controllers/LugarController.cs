@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Passeio.Api.Extensions;
 using Passeio.Api.ViewModel;
-using Passeio.Data.Repository;
 using Passeio.Negocio.Interfaces;
 using Passeio.Negocio.Models;
-using Passeio.Negocio.Services;
 
 namespace Passeio.Api.Controllers
 {
@@ -37,14 +32,14 @@ namespace Passeio.Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<LugarViewModel>> ObterPorId(Guid id)
         {
-            var categoria = await _lugarrepository.ObterPorId(id);
+            var lugar = await _lugarrepository.ObterPorId(id);
 
-            if (categoria == null)
+            if (lugar == null)
                 return NotFound();
 
-            var categoriaViewModel = _mapper.Map<LugarViewModel>(categoria);
+            var lugarViewModel = _mapper.Map<LugarViewModel>(lugar);
 
-            return Ok(categoriaViewModel);
+            return Ok(lugarViewModel);
         }
 
         //[ClaimsAuthorize("Admin", "Geral")]
@@ -60,5 +55,24 @@ namespace Passeio.Api.Controllers
 
             return CustomResponse(lugarViewModel);
         }
+
+        //[ClaimsAuthorize("Admin", "Geral")]
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult<LugarViewModel>> Atualizar(Guid id, LugarViewModel lugarViewModel)
+        {
+            if (id != lugarViewModel.Id)
+            {
+                NotificarErro("O id informado não é o mesmo que foi passado na query");
+                return CustomResponse(lugarViewModel);
+            }
+
+            if (!ModelState.IsValid) 
+                return CustomResponse(ModelState);
+
+            await _lugarservice.Atualizar(_mapper.Map<Lugar>(lugarViewModel));
+
+            return CustomResponse(lugarViewModel);
+        }
+
     }
 }
